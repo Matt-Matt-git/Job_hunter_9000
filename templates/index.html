@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Job Tracker</title>
+</head>
+<body>
+    <nav class="navbar">
+         <h1>Job Tracker 9000</h1>
+    </nav>
+    <div class="stats_bar">
+       <div class="stat_card">
+           <p class="stat_number">{{ total }}</p>
+           <p class="stat_label">Total Applications</p>
+       </div>
+       <div class="stat_card">
+           <p class="stat_number">{{ applied }}</p>
+           <p class="stat_label">Applied</p>
+       </div>
+       <div class="stat_card">
+           <p class="stat_number">{{ interview }}</p>
+           <p class="stat_label">Interviews</p>
+        </div>
+        <div class="stat_card">
+           <p class="stat_number">{{ rejected }}</p>
+           <p class="stat_label">Rejected</p>
+         </div>
+        <div class="stat_card">
+           <p class="stat_number">{{ rejection_rate }}</p>
+           <p class="stat_label">Rejection rate %</p>
+         </div>
+        <div class="stat_card">
+           <p class="stat_number">{{ interview_rate }}</p>
+           <p class="stat_label">Interview rate %</p>
+         </div>
+    </div>
+    <div class="charts_row">
+       <div class="chart_container">
+           <canvas id="statusChart"></canvas>
+       </div>
+       <div class="chart_container">
+           <canvas id="app_bar"></canvas>
+       </div>
+    </div>
+    <div class="filter_bar">
+       <button onclick="changeTimeframe('D')" class="filter_button">Day</button>
+       <button onclick="changeTimeframe('W')" class="filter_button">Week</button>
+       <button onclick="changeTimeframe('M')" class="filter_button">Month</button>
+    </div>
+    <input type="text" class="search_box" id="search" placeholder="Search by company...">
+    <div class="filter_bar">
+       <button onclick="filterStatus('all')" class="filter_button">All</button>
+       <button onclick="filterStatus('applied')" class="filter_button">Applied</button>
+       <button onclick="filterStatus('interview')" class="filter_button">Interview</button>
+       <button onclick="filterStatus('rejected')" class="filter_button">Rejected</button>
+    </div>
+
+    <button onclick="openDialog()" class="submit_button" id="toggle_button">+ Add Job</button>
+    <dialog id="add_dialog">
+        <form action="/add" method="POST" class="dialog_form">
+        <input type="text" name="company" placeholder="Company name" class="company_input">
+        <input type="text" name="title" placeholder="Job title" class="job_title_input">
+        <select name="status" class="status">
+            <option>Applied</option>
+            <option>Interview</option>
+            <option>Rejected</option>
+        </select>
+        <input type="date" name="date" class="date">
+        <textarea name="notes" placeholder="Type of role, description, close date etc..."></textarea>
+        <button type="submit" class="submit_button" >Add Job</button>
+        <button type="button" class="submit_button" onclick="closeDialog()">Cancel</button>
+        </form>
+    </dialog>
+    {% with messages = get_flashed_messages() %}
+       {% if messages %}
+           {% for message in messages %}
+               <p class="flash_message">{{ message }}</p>
+           {% endfor %}
+       {% endif %}
+    {% endwith %}
+    {% if jobs %}
+       <table class="maintable">
+       <tr class="tablerow_header">
+           <th>Company</th>
+           <th>Job Title</th>
+           <th>Status</th>
+           <th>Application Date</th>
+           <th>Notes</th>
+       </tr>
+       {% for job in jobs %}
+       <tr class="tablerow_job">
+           <td>{{ job["Company"] }}</td>
+           <td>{{ job["Job Title"] }}</td>
+           <td class="status_{{ job['Status'] | lower }}">{{ job["Status"] }}</td>
+           <td>{{ job["Application date"] }}</td>
+           <td>{{ job["Notes"] }}</td>
+           <td>
+                <button 
+                     onclick="openEditDialog({{ loop.index0 }}, this.dataset.company, this.dataset.title, this.dataset.status, this.dataset.date, this.dataset.notes)"
+                     data-company="{{ job['Company'] }}"
+                     data-title="{{ job['Job Title'] }}"
+                     data-status="{{ job['Status'] }}"
+                     data-date="{{ job['Application date'] }}"
+                     data-notes="{{ job['Notes'] }}"
+                     class="edit_form">Edit
+                </button>  
+           </td>
+           <td>
+               <form action="/delete" method="POST" class="del_form">
+                  <input type="hidden" name="index" value="{{ loop.index0 }}">
+                  <button type="submit" class="delete_button" onclick="return confirm('Are you sure you want to delete this job?')">Delete</button>
+               </form>
+           </td>
+       </tr>
+       {% endfor %}
+       </table>
+    {% else %}
+       <p class="empty_state">No jobs added yet. Add your first application below!</p>
+    {% endif %}
+
+    <dialog id="edit_dialog">
+        <form action="/update" method="POST" class="dialog_form">
+            <input type="text" id="edit_company" name="company">
+            <input type="text" id="edit_title" name="title">
+            <select id="edit_status" name="status">
+                <option>Applied</option>
+                <option>Interview</option>
+                <option>Rejected</option>
+            </select>
+            <input type="date" id="edit_date" name="date">
+            <textarea id="edit_notes" name="notes"></textarea>
+            <input type="hidden" id="edit_index" name="index">
+            <button type="submit" class="submit_button">Update</button>
+            <button type="button" class="submit_button" onclick="closeEditDialog()">Cancel</button>
+        </form>
+    </dialog>
+
+<script>
+    const applied = {{ applied }};
+    const interview = {{ interview }};
+    const rejected = {{ rejected }};
+    const chartLabelsM = {{ chart_labels_M | tojson }};
+    const chartDataM = {{ chart_data_M | tojson }};
+    const chartLabelsW = {{ chart_labels_W | tojson }};
+    const chartDataW = {{ chart_data_W | tojson }};
+    const chartLabelsD = {{ chart_labels_D | tojson }};
+    const chartDataD = {{ chart_data_D | tojson }};
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

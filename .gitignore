@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+info.csv
+*.db

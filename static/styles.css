@@ -1,0 +1,247 @@
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #cfe7f8;
+    color:#111;
+}
+
+
+.navbar {
+    background-color: #1D3A50;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+.navbar h1 {
+    color: white;
+    margin: 16px;
+}
+
+dialog {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    padding: 0;
+}
+
+dialog::backdrop {
+    background-color: rgba(0,0,0,0.5);
+}
+
+.dialog_form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 16px;
+    background-color: #91A1AC;
+    border-radius: 8px;
+    min-width: 400px;
+}
+
+.dialog_form input, .dialog_form select, .dialog_form textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.dialog_form textarea {
+    grid-column: span 2;
+}
+
+.empty_state {
+    text-align: center;
+    background-color: #91A1AC;
+    color: white;
+    padding: 48px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 16px 16px 16px 16px;
+    font-size: 18px;
+}
+
+.maintable {
+    margin-top: 16px;
+    background-color: #cfe7f8;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-collapse: collapse;
+    overflow: hidden;  /* makes border-radius clip the corners properly */
+    margin-bottom: 1.5rem;
+}
+
+.maintable th, .maintable td {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+.tablerow_header {
+    background-color: #476276;
+    color: white;
+}
+
+.tablerow_job {
+    text-align: center;
+    background-color: #91A1AC; 
+    color: black;
+    transition: background-color 0.2s;
+}
+
+.tablerow_job:hover {
+    background-color: #f0f0f0; 
+}
+
+.delete_button {
+    background-color: red;
+    color: white;
+    transition: background-color 0.2s;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
+    
+}
+
+.delete_button:hover {
+    background-color: darkred;
+}
+
+.edit_form {
+    background-color: green;
+    color: white;
+    transition: background-color 0.2s;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
+}
+
+.edit_form:hover {
+    background-color: darkgreen;
+}
+
+.submit_button {
+    margin-top: 16px;
+    background-color: #1D3A50;
+    color: white;
+    border: none;
+    transition: background-color 0.2s;
+    padding: 4px 8px;
+    cursor: pointer;
+    grid-column: span 2;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1)   
+}
+
+.submit_button:hover {
+    background-color: #3b75a0;
+}
+
+.search_box {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.filter_button.active {
+    background-color: #3b75a0;
+    color: white;
+}
+
+.filter_button {
+    margin-top: 16px;
+    background-color: #1D3A50;
+    color: white;
+    border: none;
+    transition: background-color 0.2s;
+    padding: 4px 8px;
+    cursor: pointer;
+    grid-column: span 2;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1)   
+}
+
+.company_input, .job_title_input, .date, .status {
+    padding: 4px;
+    margin: 4px;
+}
+
+.flash_message {
+    background-color: #5A8100;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.status_applied {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.status_interview {
+    background-color: #FF9800;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.status_rejected {
+    background-color: #f44336;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.stats_bar {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.stat_card {
+    text-align: center;
+    background-color: #91A1AC;
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat_number {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+}
+.stat_label {
+    font-size: 14px;
+    margin: 0;
+    color: #444;
+}
+
+.charts_row {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.chart_container {
+    width: 300px;
+    height: 300px;
+    flex: 1;
+}
