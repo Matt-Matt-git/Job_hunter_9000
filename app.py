@@ -1,8 +1,8 @@
 from flask import Flask, render_template, flash
+from flask_sqlalchemy import SQLAlchemy
 from function import add, delete, edit, update 
 import pandas as pd
 import os
-
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -10,6 +10,26 @@ app.secret_key = "your_secret_key"
 filepath = os.path.dirname(__file__)
 csv_path = os.path.join(filepath, "info.csv")
 Jobs_df = pd.read_csv(csv_path)
+
+filepath = os.path.dirname(__file__)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(filepath, "jobs.db")}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class Job(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String, nullable=False)
+    job_title = db.Column(db.String, nullable=False)
+    status = db.Column(db.String, nullable=False)
+    date = db.Column(db.String, nullable=False)
+    notes = db.Column(db.String)
+    history = db.relationship('StatusHistory', backref='job', lazy=True)
+
+class StatusHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
+    status = db.Column(db.String, nullable=False)
+    changed_date = db.Column(db.String, nullable=False)
 
 @app.route("/add", methods=["POST"])
 def add_route():
