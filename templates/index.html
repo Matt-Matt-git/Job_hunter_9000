@@ -91,25 +91,25 @@
        </tr>
        {% for job in jobs %}
        <tr class="tablerow_job">
-           <td>{{ job["Company"] }}</td>
-           <td>{{ job["Job Title"] }}</td>
-           <td class="status_{{ job['Status'] | lower }}">{{ job["Status"] }}</td>
-           <td>{{ job["Application date"] }}</td>
-           <td>{{ job["Notes"] }}</td>
+           <td>{{ job.company }}</td>
+           <td>{{ job.job_title }}</td>
+           <td class="status_{{ job.status | lower }}">{{ job.status }}</td>
+           <td>{{ job.date }}</td>
+           <td>{{ job.notes }}</td>
            <td>
                 <button 
-                     onclick="openEditDialog({{ loop.index0 }}, this.dataset.company, this.dataset.title, this.dataset.status, this.dataset.date, this.dataset.notes)"
-                     data-company="{{ job['Company'] }}"
-                     data-title="{{ job['Job Title'] }}"
-                     data-status="{{ job['Status'] }}"
-                     data-date="{{ job['Application date'] }}"
-                     data-notes="{{ job['Notes'] }}"
+                     onclick="openEditDialog({{ job.id }}, this.dataset.company, this.dataset.title, this.dataset.status, this.dataset.date, this.dataset.notes)"
+                     data-company="{{ job.company }}"
+                     data-title="{{ job.job_title }}"
+                     data-status="{{ job.status }}"
+                     data-date="{{ job.date }}"
+                     data-notes="{{ job.notes }}"
                      class="edit_form">Edit
                 </button>  
            </td>
            <td>
                <form action="/delete" method="POST" class="del_form">
-                  <input type="hidden" name="index" value="{{ loop.index0 }}">
+                  <input type="hidden" name="index" value="{{ job.id }}">
                   <button type="submit" class="delete_button" onclick="return confirm('Are you sure you want to delete this job?')">Delete</button>
                </form>
            </td>
