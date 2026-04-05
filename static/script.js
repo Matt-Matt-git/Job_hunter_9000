@@ -73,6 +73,26 @@ function closeEditDialog() {
     document.getElementById("edit_dialog").close()
 }
 
+function openDetailsDialog(data) {
+    document.getElementById("details_company").textContent = data.company
+    document.getElementById("details_job_title").textContent = data.jobTitle
+    document.getElementById("details_status").textContent = data.status
+    document.getElementById("details_date").textContent = data.date
+    document.getElementById("details_industry").textContent = data.industry
+    document.getElementById("details_source").textContent = data.source
+    document.getElementById("details_location").textContent = data.location
+    document.getElementById("details_salary").textContent = data.salary
+    document.getElementById("details_contact").textContent = data.contactName + " — " + data.contactEmail
+    document.getElementById("details_closing_date").textContent = data.closingDate
+    document.getElementById("details_notes").textContent = data.notes
+    document.getElementById("details_url").href = data.jobUrl
+    document.getElementById("details_dialog").showModal()
+}
+
+function closeDetailsDialog() {
+    document.getElementById("details_dialog").close()
+}
+
 const ctx = document.getElementById("statusChart")
 new Chart(ctx, {
     type: "doughnut",

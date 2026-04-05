@@ -68,8 +68,6 @@ dialog::backdrop {
     margin-top: 16px;
     background-color: #cfe7f8;
     width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border-collapse: collapse;
     overflow: hidden;  /* makes border-radius clip the corners properly */
     margin-bottom: 1.5rem;
