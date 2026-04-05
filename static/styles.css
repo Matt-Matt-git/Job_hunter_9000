@@ -34,7 +34,7 @@ dialog::backdrop {
 
 .dialog_form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
     padding: 16px;
     background-color: #91A1AC;
@@ -50,7 +50,7 @@ dialog::backdrop {
 }
 
 .dialog_form textarea {
-    grid-column: span 2;
+    grid-column: span 3;
 }
 
 .empty_state {
@@ -139,7 +139,7 @@ dialog::backdrop {
     transition: background-color 0.2s;
     padding: 4px 8px;
     cursor: pointer;
-    grid-column: span 2;
+    grid-column: span 3;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1)   
 }

@@ -38,6 +38,8 @@ class StatusHistory(db.Model):
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
     status = db.Column(db.String, nullable=False)
     changed_date = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.String, default=lambda: datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    notes_at_change = db.Column(db.String, nullable=True)
 
 @app.route("/add", methods=["POST"])
 def add_route():
@@ -46,20 +48,38 @@ def add_route():
     status = request.form["status"]
     date = request.form["date"]
     notes = request.form["notes"]
+    industry = request.form.get("industry", "")
+    source = request.form.get("source", "")
+    contact_name = request.form.get("contact_name", "")
+    contact_email = request.form.get("contact_email", "")
+    salary = request.form.get("salary", "")
+    job_url = request.form.get("job_url", "")
+    location = request.form.get("location", "")
+    closing_date = request.form.get("closing_date", "")
 
     new_job = Job(
         company=company,
         job_title=job_title,
         status=status,
         date=date,
-        notes=notes
+        notes=notes,
+        industry=industry,
+        source=source,
+        contact_name=contact_name,
+        contact_email=contact_email,
+        salary=salary,
+        job_url=job_url,
+        location=location,
+        closing_date=closing_date
     )
     db.session.add(new_job)
 
     history = StatusHistory(
         job=new_job,
         status=status,
-        changed_date=date
+        changed_date=date,
+        timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        notes_at_change=""
     )
     db.session.add(history)
     
@@ -89,12 +109,22 @@ def update_route():
     job.status = new_status
     job.date = request.form["date"]
     job.notes = request.form["notes"]
+    job.industry = request.form.get("industry", "")
+    job.source = request.form.get("source", "")
+    job.contact_name = request.form.get("contact_name", "")
+    job.contact_email = request.form.get("contact_email", "")
+    job.salary = request.form.get("salary", "")
+    job.job_url = request.form.get("job_url", "")
+    job.location = request.form.get("location", "")
+    job.closing_date = request.form.get("closing_date", "")
     
     if old_status != new_status:
         history = StatusHistory(
             job=job,
             status=new_status,
-            changed_date=datetime.now().strftime("%Y-%m-%d")
+            changed_date=datetime.now().strftime("%Y-%m-%d"),
+            timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            notes_at_change=request.form.get("status_notes", "")
         )
         db.session.add(history)
     db.session.commit()

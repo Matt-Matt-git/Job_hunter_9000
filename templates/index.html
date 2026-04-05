@@ -70,8 +70,42 @@
             <option>Applied</option>
             <option>Interview</option>
             <option>Rejected</option>
+            <option>Offer</option>
+            <option>Widthdrawn</option>
         </select>
         <input type="date" name="date" class="date">
+        <select name="industry" class="industry">
+            <option value="">Select Industry</option>
+            <option>Pharmaceutical</option>
+            <option>Biotech</option>
+            <option>Chemical</option>
+            <option>Food & Beverage</option>
+            <option>Finance</option>
+            <option>Technology</option>
+            <option>Retail</option>
+            <option>Hospitality</option>
+            <option>Healthcare</option>
+            <option>Academic/Research</option>
+            <option>Engineering</option>
+            <option>Legal</option>
+            <option>Marketing</option>
+            <option>Other</option>
+        </select>
+        <select name="source">
+            <option value="">Select Source</option>
+            <option>Indeed</option>
+            <option>LinkedIn</option>
+            <option>Company Website</option>
+            <option>Friend/Referral</option>
+            <option>Recruiter</option>
+            <option>Other</option>
+        </select>
+        <input type="text" name="contact_name" placeholder="Contact name">
+        <input type="email" name="contact_email" placeholder="Contact email">
+        <input type="text" name="salary" placeholder="Salary range e.g. £30,000-£35,000">
+        <input type="url" name="job_url" placeholder="Job URL">
+        <input type="text" name="location" placeholder="Location e.g. Remote, Edinburgh">
+        <input type="date" name="closing_date" placeholder="Closing date">
         <textarea name="notes" placeholder="Type of role, description, close date etc..."></textarea>
         <button type="submit" class="submit_button" >Add Job</button>
         <button type="button" class="submit_button" onclick="closeDialog()">Cancel</button>
@@ -132,8 +166,42 @@
                 <option>Applied</option>
                 <option>Interview</option>
                 <option>Rejected</option>
+                <option>Offer</option>
+                <option>Widthdrawn</option>
             </select>
             <input type="date" id="edit_date" name="date">
+            <select name="industry" class="industry">
+                 <option value="">Select Industry</option>
+                 <option>Pharmaceutical</option>
+                 <option>Biotech</option>
+                 <option>Chemical</option>
+                 <option>Food & Beverage</option>
+                 <option>Finance</option>
+                 <option>Technology</option>
+                 <option>Retail</option>
+                 <option>Hospitality</option>
+                 <option>Healthcare</option>
+                 <option>Academic/Research</option>
+                 <option>Engineering</option>
+                 <option>Legal</option>
+                 <option>Marketing</option>
+                 <option>Other</option>
+            </select>
+            <select name="source">
+                <option value="">Select Source</option>
+                <option>Indeed</option>
+                <option>LinkedIn</option>
+                <option>Company Website</option>
+                <option>Friend/Referral</option>
+                <option>Recruiter</option>
+                <option>Other</option>
+            </select>
+            <input type="text" name="contact_name" placeholder="Contact name">
+            <input type="email" name="contact_email" placeholder="Contact email">
+            <input type="text" name="salary" placeholder="Salary range e.g. £30,000-£35,000">
+            <input type="url" name="job_url" placeholder="Job URL">
+            <input type="text" name="location" placeholder="Location e.g. Remote, Edinburgh">
+            <input type="date" name="closing_date" placeholder="Closing date">
             <textarea id="edit_notes" name="notes"></textarea>
             <input type="hidden" id="edit_index" name="index">
             <button type="submit" class="submit_button">Update</button>
