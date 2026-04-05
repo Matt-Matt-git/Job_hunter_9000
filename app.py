@@ -2,6 +2,7 @@ from flask import Flask, render_template, flash, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
+from collections import defaultdict
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -101,6 +102,20 @@ def index():
     rejection_rate = round((rejected / total * 100), 1) if total > 0 else 0
     interview_rate = round((interview / total * 100), 1) if total > 0 else 0
 
+    monthly = defaultdict(int)
+    weekly = defaultdict(int)
+    daily = defaultdict(int)
+
+    for job in jobs:
+        date = datetime.strptime(job.date, "%Y-%m-%d")
+        monthly[date.strftime("%Y-%m")] += 1
+        weekly[date.strftime("%Y-W%W")] += 1
+        daily[date.strftime("%Y-%m-%d")] += 1
+    
+    chart_labels_M = sorted(monthly.keys())
+    chart_labels_W = sorted(weekly.keys())
+    chart_labels_D = sorted(daily.keys())
+
     return render_template("index.html",
         jobs=jobs,
         total=total,
@@ -109,13 +124,15 @@ def index():
         rejected=rejected,
         rejection_rate=rejection_rate,
         interview_rate=interview_rate,
-        chart_labels_M=[],
-        chart_data_M=[],
-        chart_labels_W=[],
-        chart_data_W=[],
-        chart_labels_D=[],
-        chart_data_D=[],
+
+        chart_labels_M=chart_labels_M,
+        chart_data_M=[monthly[k] for k in chart_labels_M],
+        chart_labels_W=chart_labels_W,
+        chart_data_W=[weekly[k] for k in chart_labels_W],
+        chart_labels_D=chart_labels_D,
+        chart_data_D=[daily[k] for k in chart_labels_D],
     )
+
 with app.app_context():
     db.create_all()
 
