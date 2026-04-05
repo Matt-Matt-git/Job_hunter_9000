@@ -1,15 +1,12 @@
 from flask import Flask, render_template, flash, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import pandas as pd
 import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
 filepath = os.path.dirname(__file__)
-csv_path = os.path.join(filepath, "info.csv")
-Jobs_df = pd.read_csv(csv_path)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(filepath, "jobs.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -119,31 +116,8 @@ def index():
         chart_labels_D=[],
         chart_data_D=[],
     )
-
 with app.app_context():
     db.create_all()
-     # only migrate if database is empty
-    if Job.query.count() == 0:
-        for _, row in Jobs_df.iterrows():
-            job = Job(
-                company=row["Company"],
-                job_title=row["Job Title"],
-                status=row["Status"],
-                date=str(row["Application date"]),
-                notes=row["Notes"] if pd.notna(row["Notes"]) else ""
-            )
-            db.session.add(job)
-            
-            # add initial status to history
-            history = StatusHistory(
-                job=job,
-                status=row["Status"],
-                changed_date=str(row["Application date"])
-            )
-            db.session.add(history)
-        
-        db.session.commit()
-        print("Migration complete!")
 
 if __name__ == "__main__":
     app.run(debug=True)
