@@ -51,6 +51,34 @@ function changeTimeframe(timeframe) {
     timeChart.update()
 }
 
+let currentSort = { column: null, ascending: true }
+
+function sortTable(columnIndex) {
+    let rows = Array.from(document.querySelectorAll(".tablerow_job"))
+    if (currentSort.column === columnIndex) {
+        currentSort.ascending = !currentSort.ascending  // flip direction
+    } else {
+        currentSort.column = columnIndex
+        currentSort.ascending = true  // reset to ascending for new column
+    }
+    rows.sort((a, b) => {
+    let aText = a.cells[columnIndex].textContent.trim()
+    let bText = b.cells[columnIndex].textContent.trim()
+
+    let aDate = Date.parse(aText)
+    let bDate = Date.parse(bText)
+    let comparison
+    if (!isNaN(aDate) && !isNaN(bDate)) {
+        comparison = aDate - bDate  // numeric date comparison
+    } else {
+        comparison = aText.localeCompare(bText)  // string comparison
+    }
+    return currentSort.ascending ? comparison : -comparison
+})
+    let table = document.querySelector(".maintable")
+    rows.forEach(row => table.appendChild(row))
+}
+
 function openDialog() {
     document.getElementById("add_dialog").showModal()
 }

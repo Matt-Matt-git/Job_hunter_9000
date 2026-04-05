@@ -71,10 +71,10 @@
     {% if jobs %}
        <table class="maintable">
        <tr class="tablerow_header">
-           <th>Company</th>
-           <th>Job Title</th>
-           <th>Status</th>
-           <th>Application Date</th>
+           <th onclick="sortTable(0)">Company ↕</th>
+           <th onclick="sortTable(1)">Job Title ↕</th>
+           <th onclick="sortTable(2)">Status ↕</th>
+           <th onclick="sortTable(3)">Date ↕</th>
        </tr>
        {% for job in jobs %}
        <tr class="tablerow_job"
@@ -94,7 +94,13 @@
        data-job-url="{{ job.job_url }}">
             <td>{{ job.company }}</td>
             <td>{{ job.job_title }}</td>
-            <td class="status_{{ job.status | lower }}">{{ job.status }}</td>
+            <td class="{% if job.ghosted %}status_ghosted{% else %}status_{{ job.status | lower }}{% endif %}">
+                {% if job.ghosted %}
+                     👻 Ghosted
+                {% else %}
+                     {{ job.status }}
+                {% endif %}
+                </td>
             <td>{{ job.date }}</td>
             <td>
                 <button
