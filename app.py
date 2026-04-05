@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 from collections import defaultdict
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -12,6 +13,7 @@ filepath = os.path.dirname(__file__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(filepath, "jobs.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +22,15 @@ class Job(db.Model):
     status = db.Column(db.String, nullable=False)
     date = db.Column(db.String, nullable=False)
     notes = db.Column(db.String)
+    industry = db.Column(db.String, nullable=True)
+    source = db.Column(db.String, nullable=True)
+    contact_name = db.Column(db.String, nullable=True)
+    contact_email = db.Column(db.String, nullable=True)
+    salary = db.Column(db.String, nullable=True)
+    job_url = db.Column(db.String, nullable=True)
+    location = db.Column(db.String, nullable=True)
+    closing_date = db.Column(db.String, nullable=True)
+    ghosted = db.Column(db.Boolean, default = False)
     history = db.relationship('StatusHistory', backref='job', lazy=True, cascade="all, delete-orphan")
 
 class StatusHistory(db.Model):
@@ -55,7 +66,7 @@ def add_route():
     db.session.commit()
     flash("Job added successfully")
     return redirect("/")
-
+""
 @app.route("/delete", methods=["POST"])
 def delete_route():
     job_id = request.form["index"]
@@ -94,13 +105,33 @@ def update_route():
 @app.route("/")
 def index():
     jobs = Job.query.all()
+    jobs_history = StatusHistory.query.all()
     
+    num_interview = set()
+    for history in jobs_history:
+        if history.status == 'Interview':
+            num_interview.add(history.job_id)
+
+    num_rejected = set()
+    for history in jobs_history:
+        if history.status == 'Rejected':
+            num_rejected.add(history.job_id)
+
+    num_ghosted = 0
+    for job in jobs:
+        if job.status == "Applied":
+            date = datetime.strptime(job.date, "%Y-%m-%d")
+            days_since = (datetime.now() - date).days
+            if days_since >= 21:
+                num_ghosted += 1
+            
     total = len(jobs)
     applied = sum(1 for job in jobs if job.status == "Applied")
-    interview = sum(1 for job in jobs if job.status == "Interview")
-    rejected = sum(1 for job in jobs if job.status == "Rejected")
+    interview = len(num_interview)
+    rejected = len(num_rejected)
     rejection_rate = round((rejected / total * 100), 1) if total > 0 else 0
     interview_rate = round((interview / total * 100), 1) if total > 0 else 0
+    
 
     monthly = defaultdict(int)
     weekly = defaultdict(int)
@@ -124,6 +155,7 @@ def index():
         rejected=rejected,
         rejection_rate=rejection_rate,
         interview_rate=interview_rate,
+        ghosted = num_ghosted,
 
         chart_labels_M=chart_labels_M,
         chart_data_M=[monthly[k] for k in chart_labels_M],

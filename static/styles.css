@@ -205,10 +205,17 @@ dialog::backdrop {
     padding: 4px 8px;
 }
 
+.status_ghosted {
+    background-color: lightskyblue;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
 .stats_bar {
     margin-top: 16px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 8px;
     width: 100%;
     box-sizing: border-box;

@@ -28,6 +28,10 @@
            <p class="stat_label">Rejected</p>
          </div>
         <div class="stat_card">
+           <p class="stat_number">{{ ghosted }}</p>
+           <p class="stat_label">Ghosted</p>
+         </div>
+        <div class="stat_card">
            <p class="stat_number">{{ rejection_rate }}</p>
            <p class="stat_label">Rejection rate %</p>
          </div>
@@ -141,6 +145,7 @@
     const applied = {{ applied }};
     const interview = {{ interview }};
     const rejected = {{ rejected }};
+    const ghosted = {{ghosted}}
     const chartLabelsM = {{ chart_labels_M | tojson }};
     const chartDataM = {{ chart_data_M | tojson }};
     const chartLabelsW = {{ chart_labels_W | tojson }};
