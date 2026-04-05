@@ -87,6 +87,14 @@ function openDetailsDialog(data) {
     document.getElementById("details_notes").textContent = data.notes
     document.getElementById("details_url").href = data.jobUrl
     document.getElementById("details_dialog").showModal()
+    
+    let urlButton = document.getElementById("details_url")
+    if (data.jobUrl) {
+       urlButton.href = data.jobUrl
+       urlButton.style.display = ""
+    } else {
+       urlButton.style.display = "none"
+    }
 }
 
 function closeDetailsDialog() {

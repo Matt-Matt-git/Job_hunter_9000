@@ -5,6 +5,23 @@ import os
 from collections import defaultdict
 from flask_migrate import Migrate
 
+GHOSTING_THRESHOLDS = {
+    "Pharmaceutical": 28,
+    "Biotech": 28,
+    "Chemical": 21,
+    "Food & Beverage": 21,
+    "Finance": 21,
+    "Technology": 14,
+    "Retail": 7,
+    "Hospitality": 7,
+    "Healthcare": 21,
+    "Academic/Research": 56,
+    "Engineering": 21,
+    "Legal": 21,
+    "Marketing": 14,
+    "Other": 21
+}
+
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
@@ -149,12 +166,17 @@ def index():
 
     num_ghosted = 0
     for job in jobs:
-        if job.status == "Applied":
+        threshold = GHOSTING_THRESHOLDS.get(job.industry, 21)
+        if job.status in ["Applied", "Interview"]:
             date = datetime.strptime(job.date, "%Y-%m-%d")
             days_since = (datetime.now() - date).days
-            if days_since >= 21:
+            if days_since >= threshold:
                 num_ghosted += 1
-            
+                job.ghosted=True
+            else:
+                job.ghosted=False
+    db.session.commit()
+
     total = len(jobs)
     applied = sum(1 for job in jobs if job.status == "Applied")
     interview = len(num_interview)
