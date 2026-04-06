@@ -165,7 +165,7 @@ new Chart(ctx, {
     data: {
         labels: ["Applied", "Interview", "Rejected"],
         datasets: [{
-            data: [applied, interview, rejected],
+            data: [applied, interview, rejected, offer, withdrawn],
             backgroundColor: ["#4CAF50", "#FF9800", "#f44336"]
         }]
     },

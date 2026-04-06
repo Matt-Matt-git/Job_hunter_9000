@@ -164,6 +164,9 @@ def index():
         if history.status == 'Rejected':
             num_rejected.add(history.job_id)
 
+    num_responses = set()
+    num_responses = len({history.job_id for history in jobs_history if history.status in ["Interview", "Rejected", "Offer"]})
+    
     num_ghosted = 0
     for job in jobs:
         threshold = GHOSTING_THRESHOLDS.get(job.industry, 21)
@@ -182,12 +185,14 @@ def index():
         
     total = len(jobs)
     applied = sum(1 for job in jobs if job.status == "Applied")
+    offers = sum(1 for job in jobs if job.status == 'Offer')
+    withdrawn = sum(1 for job in jobs if job.status == "Withdrawn")
     interview = len(num_interview)
     rejected = len(num_rejected)
     rejection_rate = round((rejected / total * 100), 1) if total > 0 else 0
     interview_rate = round((interview / total * 100), 1) if total > 0 else 0
+    response_rate = round((num_responses/total * 100), 1 ) if total > 0 else 0
     
-
     monthly = defaultdict(int)
     weekly = defaultdict(int)
     daily = defaultdict(int)
@@ -208,8 +213,11 @@ def index():
         applied=applied,
         interview=interview,
         rejected=rejected,
+        offers=offers,
+        withdrawn=withdrawn,
         rejection_rate=rejection_rate,
         interview_rate=interview_rate,
+        response_rate=response_rate,
         ghosted = num_ghosted,
         industry_list=industry_list,
         source_list=source_list,

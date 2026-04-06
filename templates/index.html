@@ -10,35 +10,49 @@
     <nav class="navbar">
          <h1>Job Tracker 9000</h1>
     </nav>
-    <div class="stats_bar">
+    <div class="stats_bar_count">
        <div class="stat_card">
            <p class="stat_number">{{ total }}</p>
            <p class="stat_label">Total Applications</p>
        </div>
        <div class="stat_card">
            <p class="stat_number">{{ applied }}</p>
-           <p class="stat_label">Applied</p>
+           <p class="stat_label">Current Applications</p>
        </div>
        <div class="stat_card">
            <p class="stat_number">{{ interview }}</p>
-           <p class="stat_label">Interviews</p>
+           <p class="stat_label"> Total Interviews</p>
         </div>
         <div class="stat_card">
            <p class="stat_number">{{ rejected }}</p>
-           <p class="stat_label">Rejected</p>
+           <p class="stat_label">Total Rejected</p>
          </div>
         <div class="stat_card">
            <p class="stat_number">{{ ghosted }}</p>
-           <p class="stat_label">Ghosted</p>
+           <p class="stat_label">Total Ghosted</p>
          </div>
+         <div class="stat_card">
+           <p class="stat_number">{{ offers }}</p>
+           <p class="stat_label">Offers</p>
+         </div>
+         <div class="stat_card">
+           <p class="stat_number">{{ withdrawn }}</p>
+           <p class="stat_label">Withdrawn</p>
+         </div>
+    </div>
+    <div class="stat_bar_rate">
         <div class="stat_card">
-           <p class="stat_number">{{ rejection_rate }}</p>
-           <p class="stat_label">Rejection rate %</p>
-         </div>
+            <p class="stat_number">{{ rejection_rate }}</p>
+            <p class="stat_label">Rejection rate %</p>
+        </div>
         <div class="stat_card">
-           <p class="stat_number">{{ interview_rate }}</p>
-           <p class="stat_label">Interview rate %</p>
-         </div>
+            <p class="stat_number">{{ interview_rate }}</p>
+            <p class="stat_label">Interview rate %</p>
+        </div>
+        <div class="stat_card">
+            <p class="stat_number">{{ response_rate }}</p>
+            <p class="stat_label">Response rate %</p>
+        </div>
     </div>
     <div class="charts_row">
        <div class="chart_container">
@@ -354,7 +368,9 @@
     const applied = {{ applied }};
     const interview = {{ interview }};
     const rejected = {{ rejected }};
-    const ghosted = {{ghosted}}
+    const ghosted = {{ghosted}};
+    const offers = {{offers}};
+    const withdrawn = {{withdrawn}};
     const chartLabelsM = {{ chart_labels_M | tojson }};
     const chartDataM = {{ chart_data_M | tojson }};
     const chartLabelsW = {{ chart_labels_W | tojson }};

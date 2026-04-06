@@ -227,10 +227,19 @@ dialog::backdrop {
     padding: 4px 8px;
 }
 
-.stats_bar {
+.stats_bar_count {
     margin-top: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.stat_bar_rate {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
     width: 100%;
     box-sizing: border-box;
