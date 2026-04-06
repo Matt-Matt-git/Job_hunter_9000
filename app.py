@@ -103,7 +103,7 @@ def add_route():
     db.session.commit()
     flash("Job added successfully")
     return redirect("/")
-""
+
 @app.route("/delete", methods=["POST"])
 def delete_route():
     job_id = request.form["index"]
@@ -164,9 +164,20 @@ def index():
         if history.status == 'Rejected':
             num_rejected.add(history.job_id)
 
-    num_responses = set()
     num_responses = len({history.job_id for history in jobs_history if history.status in ["Interview", "Rejected", "Offer"]})
-    
+
+                     
+    interviewed_job_ids = {history.job_id for history in jobs_history if history.status in ["Interview", "Offer"]}
+    source_success = defaultdict(lambda: {"total": 0, "interviewed": 0})
+    for job in jobs: 
+        if job.source:
+            source_success[job.source]["total"] += 1
+        if job.id in interviewed_job_ids:
+            source_success[job.source]["interviewed"] += 1
+    source_success_labels = list(source_success.keys())
+    source_success_data = [round(source_success[s]["interviewed"] / source_success[s]["total"] * 100, 1) if source_success[s]["total"] > 0 else 0
+        for s in source_success_labels]
+
     num_ghosted = 0
     for job in jobs:
         threshold = GHOSTING_THRESHOLDS.get(job.industry, 21)
@@ -181,7 +192,24 @@ def index():
     db.session.commit()
 
     industry_list = sorted(set(job.industry for job in jobs if job.industry))
+
+    industry_count = defaultdict(int)
+    for job in jobs:
+        if job.industry:
+            industry_count[job.industry] += 1
+
+    industry_labels = list(industry_count.keys())
+    industry_data = list(industry_count.values())
+
     source_list = sorted(set(job.source for job in jobs if job.source))
+
+    source_counts = defaultdict(int)
+    for job in jobs:
+        if job.source:
+            source_counts[job.source] += 1
+
+    source_labels = list(source_counts.keys())
+    source_data = list(source_counts.values())
         
     total = len(jobs)
     applied = sum(1 for job in jobs if job.status == "Applied")
@@ -220,7 +248,13 @@ def index():
         response_rate=response_rate,
         ghosted = num_ghosted,
         industry_list=industry_list,
+        industry_data=industry_data,
+        industry_labels=industry_labels,
         source_list=source_list,
+        source_labels=source_labels,
+        source_data=source_data,
+        source_success_labels=source_success_labels,
+        source_success_data=source_success_data,
 
         chart_labels_M=chart_labels_M,
         chart_data_M=[monthly[k] for k in chart_labels_M],

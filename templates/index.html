@@ -10,49 +10,58 @@
     <nav class="navbar">
          <h1>Job Tracker 9000</h1>
     </nav>
-    <div class="stats_bar_count">
-       <div class="stat_card">
-           <p class="stat_number">{{ total }}</p>
-           <p class="stat_label">Total Applications</p>
-       </div>
-       <div class="stat_card">
-           <p class="stat_number">{{ applied }}</p>
-           <p class="stat_label">Current Applications</p>
-       </div>
-       <div class="stat_card">
-           <p class="stat_number">{{ interview }}</p>
-           <p class="stat_label"> Total Interviews</p>
+    <div class="rate_row">
+        <div class="rate_card">
+            <span class="rate_number">{{ response_rate }}%</span>
+            <p class="rate_label">Response Rate</p>
+            <div class="progress_bg">
+                <div class="progress_fill" style="width: {{ response_rate }}%;"></div>
+             </div>
         </div>
-        <div class="stat_card">
-           <p class="stat_number">{{ rejected }}</p>
-           <p class="stat_label">Total Rejected</p>
-         </div>
-        <div class="stat_card">
-           <p class="stat_number">{{ ghosted }}</p>
-           <p class="stat_label">Total Ghosted</p>
-         </div>
-         <div class="stat_card">
-           <p class="stat_number">{{ offers }}</p>
-           <p class="stat_label">Offers</p>
-         </div>
-         <div class="stat_card">
-           <p class="stat_number">{{ withdrawn }}</p>
-           <p class="stat_label">Withdrawn</p>
-         </div>
+        <div class="rate_card">
+            <span class="rate_number">{{ interview_rate }}%</span>
+            <p class="rate_label">Interview Rate</p>
+            <div class="progress_bg">
+                <div class="progress_fill" style="width: {{ interview_rate }}%;"></div>
+             </div>
+        </div>
+        <div class="rate_card">
+            <span class="rate_number">{{ rejection_rate }}%</span>
+            <p class="rate_label">Rejection Rate</p>
+            <div class="progress_bg">
+                <div class="progress_fill" style="width: {{ rejection_rate }}%;"></div>
+             </div>
+        </div>
     </div>
-    <div class="stat_bar_rate">
-        <div class="stat_card">
-            <p class="stat_number">{{ rejection_rate }}</p>
-            <p class="stat_label">Rejection rate %</p>
+    <div class="count_row">
+       <div class="count_card">
+           <p class="count_number">{{ total }}</p>
+           <p class="count_label">Total Applications</p>
+       </div>
+       <div class="count_card">
+           <p class="count_number">{{ applied }}</p>
+           <p class="count_label">Current Applications</p>
+       </div>
+       <div class="count_card">
+           <p class="count_number">{{ interview }}</p>
+           <p class="count_label"> Total Interviews</p>
         </div>
-        <div class="stat_card">
-            <p class="stat_number">{{ interview_rate }}</p>
-            <p class="stat_label">Interview rate %</p>
-        </div>
-        <div class="stat_card">
-            <p class="stat_number">{{ response_rate }}</p>
-            <p class="stat_label">Response rate %</p>
-        </div>
+        <div class="count_card">
+           <p class="count_number">{{ rejected }}</p>
+           <p class="count_label">Total Rejected</p>
+         </div>
+        <div class="count_card">
+           <p class="count_number">{{ ghosted }}</p>
+           <p class="count_label">Total Ghosted</p>
+         </div>
+         <div class="count_card">
+           <p class="count_number">{{ offers }}</p>
+           <p class="count_label">Offers</p>
+         </div>
+         <div class="count_card">
+           <p class="count_number">{{ withdrawn }}</p>
+           <p class="count_label">Withdrawn</p>
+         </div>
     </div>
     <div class="charts_row">
        <div class="chart_container">
@@ -60,6 +69,15 @@
        </div>
        <div class="chart_container">
            <canvas id="app_bar"></canvas>
+       </div>
+       <div class="chart_container">
+            <canvas id="sourceChart"></canvas>
+       </div>
+       <div class="chart_container">
+            <canvas id="industryChart"></canvas>
+       </div>
+       <div class="chart_container">
+            <canvas id="successSource_bar"></canvas>
        </div>
     </div>
     <div class="filter_bar" id="time_filter_bar">
@@ -103,7 +121,7 @@
            <th onclick="sortTable(1)">Job Title ↕</th>
            <th onclick="sortTable(2)">Status ↕</th>
            <th onclick="sortTable(3)">Date ↕</th>
-       </tr>
+       <th></th> <th></th> </tr>
        {% for job in jobs %}
        <tr class="tablerow_job"
        onclick="openDetailsDialog(this.dataset)"
@@ -123,13 +141,15 @@
        
             <td>{{ job.company }}</td>
             <td>{{ job.job_title }}</td>
-            <td class="{% if job.ghosted %}status_ghosted{% else %}status_{{ job.status | lower }}{% endif %}">
+            <td>
+                <span class="{% if job.ghosted %}status_ghosted{% else %}status_{{ job.status | lower }}{% endif %}">
                 {% if job.ghosted %}
                      👻 Ghosted
                 {% else %}
                      {{ job.status }}
                 {% endif %}
-                </td>
+                </span>
+            </td>
             <td>{{ job.date }}</td>
             <td>
                 <button
@@ -369,14 +389,20 @@
     const interview = {{ interview }};
     const rejected = {{ rejected }};
     const ghosted = {{ghosted}};
-    const offers = {{offers}};
-    const withdrawn = {{withdrawn}};
+    const offers = {{ offers }}; 
+    const withdrawn = {{ withdrawn }};
     const chartLabelsM = {{ chart_labels_M | tojson }};
     const chartDataM = {{ chart_data_M | tojson }};
     const chartLabelsW = {{ chart_labels_W | tojson }};
     const chartDataW = {{ chart_data_W | tojson }};
     const chartLabelsD = {{ chart_labels_D | tojson }};
     const chartDataD = {{ chart_data_D | tojson }};
+    const sourceLabels = {{ source_labels | tojson }};
+    const sourceData = {{ source_data | tojson }};  
+    const industryLabels = {{industry_labels | tojson}};
+    const industryData = {{industry_data | tojson}};
+    const sourceSuccessLabels={{source_success_labels | tojson}};
+    const sourceSuccessData={{source_success_data | tojson}};
 </script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

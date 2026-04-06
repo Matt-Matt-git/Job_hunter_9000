@@ -163,10 +163,10 @@ const ctx = document.getElementById("statusChart")
 new Chart(ctx, {
     type: "doughnut",
     data: {
-        labels: ["Applied", "Interview", "Rejected"],
+        labels: ["Applied", "Interview", "Rejected", "Offer", "Withdrawn"],
         datasets: [{
-            data: [applied, interview, rejected, offer, withdrawn],
-            backgroundColor: ["#4CAF50", "#FF9800", "#f44336"]
+            data: [applied, interview, rejected, offers, withdrawn],
+            backgroundColor: ["#4CAF50", "#FF9800", "#f44336", "#36d1f4ff", "#de55f3ff"]
         }]
     },
     options: {
@@ -192,6 +192,14 @@ new Chart(ctx, {
     }
 })
 
+const sourceColors = {
+    "LinkedIn": "#0077B5",        // LinkedIn blue
+    "Indeed": "#FF6B35",          // Indeed orange
+    "Company Website": "#4CAF50", // green
+    "Friend/Referral": "#9C27B0", // purple
+    "Recruiter": "#1D3A50",       // dark blue
+    "Other": "#91A1AC"            // grey
+}
 
 const bar = document.getElementById("app_bar")
 let timeChart = new Chart(bar, { 
@@ -209,9 +217,147 @@ let timeChart = new Chart(bar, {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
+            legend: {
+                position: "bottom"  // moves the legend to the bottom
+            },
             title: {
                 display: true,
-                text: "Number of Applications",
+                text: "Number of Application",
+                font: {
+                    size: 18,
+                    weight: "bold"
+                },
+                color: "#1D3A50",
+                padding: {
+                    bottom: 16
+                }
+            }
+        }
+    }
+})
+
+
+
+const sourceCtx = document.getElementById("sourceChart")
+new Chart(sourceCtx, {
+    type: "doughnut",
+    data: {
+        labels: sourceLabels,
+        datasets: [{
+            data: sourceData,
+            backgroundColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC")
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: "bottom"  // moves the legend to the bottom
+            },
+            title: {
+                display: true,
+                text: "Job Source",
+                font: {
+                    size: 18,
+                    weight: "bold"
+                },
+                color: "#1D3A50",
+                padding: {
+                    bottom: 16
+                }
+            }
+        }
+    }
+})
+
+console.log(sourceSuccessData)
+console.log(sourceSuccessLabels)
+
+const successSourceCtx = document.getElementById("successSource_bar")
+new Chart(successSourceCtx, {
+    type: "bar",
+    data: {
+        labels: sourceSuccessLabels,
+        datasets: [{
+            data: sourceSuccessData,
+            backgroundColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC"),
+            borderColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC")
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+            position: "bottom",
+            labels: {
+                generateLabels: function(chart) {
+                    return sourceSuccessLabels.map((label, index) => ({
+                        text: label,
+                        fillStyle: sourceColors[label] || "#91A1AC",
+                        strokeStyle: sourceColors[label] || "#91A1AC",
+                        lineWidth: 1,
+                        hidden: false,
+                        index: index
+                    }));
+                }
+            },
+                position: "bottom"  // moves the legend to the bottom
+            },
+            title: {
+                display: true,
+                text: "Interview rate by Source",
+                font: {
+                    size: 18,
+                    weight: "bold"
+                },
+                color: "#1D3A50",      
+                padding: {
+                    bottom: 16
+                }
+            }
+        }
+    }
+})
+
+const industryColors = {
+    "Pharmaceutical": "#E63946",    // red
+    "Biotech": "#2A9D8F",           // teal
+    "Chemical": "#E9C46A",          // yellow
+    "Food & Beverage": "#F4A261",   // orange
+    "Finance": "#1D3A50",           // dark blue
+    "Technology": "#4361EE",        // bright blue
+    "Retail": "#7209B7",            // purple
+    "Hospitality": "#F72585",       // pink
+    "Healthcare": "#4CC9F0",        // light blue
+    "Academic/Research": "#3A0CA3", // deep purple
+    "Engineering": "#80B918",       // green
+    "Legal": "#6D6875",             // mauve
+    "Marketing": "#FF6B6B",         // coral
+    "Other": "#91A1AC"              // grey
+}
+
+const industryCtx = document.getElementById("industryChart")
+new Chart(industryCtx, {
+    type: "doughnut",
+    data: {
+        labels: industryLabels,
+        datasets: [{
+            data: industryData,
+            backgroundColor: industryLabels.map(label => industryColors[label] || "#91A1AC")
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: "bottom"  // moves the legend to the bottom
+            },
+            title: {
+                display: true,
+                text: "Application by Industry",
                 font: {
                     size: 18,
                     weight: "bold"

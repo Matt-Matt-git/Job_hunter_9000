@@ -1,9 +1,26 @@
 
-
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #cfe7f8;
-    color:#111;
+    background-color: #F4F6F8;
+    color: #1A202C; /* Slightly softer than #111, looks better on light gray */
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased; /* Makes fonts look crisp on Mac/Chrome */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1100px; /* Or whatever width feels right for your charts */
+    margin: 0 auto;    /* Centers the website */
+    padding: 40px 20px; /* Gives top/bottom and side breathing room */
+}
+
+h1, h2, h3 {
+    color: #1D3A50; /* That dark blue from your chart title */
+    font-weight: 700;
+    letter-spacing: -0.02em; /* Tightens the letters for a "premium" header look */
+    margin-bottom: 1rem;
 }
 
 label {
@@ -27,15 +44,43 @@ label {
 .navbar {
     background-color: #1D3A50;
     color: white;
+    display: flex;
+    justify-content: space-between; /* Pushes content to the edges */
+    align-items: center;            /* Centers items vertically */
+    padding: 15px 30px;
+    width: 80%;                     /* Matches your cards and table */
+    margin: 20px auto;              /* Centers the navbar and adds top/bottom gap */
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-collapse: collapse;
-    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: sticky;
 }
 
-.navbar h1 {
-    color: white;
-    margin: 16px;
+/* Style for the logo or "Job Tracker" text */
+.navbar h1, .navbar .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+}
+
+/* Container for your links or buttons */
+.nav_links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav_links a {
+    color: #CBD5E1; /* Soft gray-blue text */
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav_links a:hover {
+    color: #FFFFFF; /* Brightens on hover */
 }
 
 dialog {
@@ -82,68 +127,105 @@ dialog::backdrop {
 }
 
 .maintable {
-    margin-top: 16px;
-    background-color: #cfe7f8;
-    width: 100%;
-    border-collapse: collapse;
-    overflow: hidden;  /* makes border-radius clip the corners properly */
-    margin-bottom: 1.5rem;
-}
-
-.maintable th, .maintable td {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 1px solid #ccc;
-    padding: 8px;
+    width: 80%;
+    margin: 40px auto;
+    border-collapse: separate; /* Allows for rounded corners on rows */
+    border-spacing: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #1A202C; /* Modern dark gray, not harsh black */
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .tablerow_header {
-    background-color: #476276;
-    color: white;
+    background-color: #e7eaed; /* Very light gray-blue */
+}
+
+.tablerow_header th {
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4A5568; /* Soft slate gray */
+    border-bottom: 2px solid #EDF2F7;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 16px;
+}
+
+.tablerow_header th:hover {
+    color: #1E293B; /* Darker on hover for the sort feature */
 }
 
 .tablerow_job {
-    text-align: center;
-    background-color: #91A1AC; 
-    color: black;
-    transition: background-color 0.2s;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .tablerow_job:hover {
-    background-color: #f0f0f0; 
+    background-color: #F8FAFC; /* Subtle hover effect */
 }
 
-.delete_button {
-    background-color: red;
-    color: white;
-    transition: background-color 0.2s;
-    border: none;
-    padding: 4px 8px;
+.tablerow_job td {
+    padding: 16px;
+    font-size: 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.tablerow_job:last-child td {
+    border-bottom: none;
+}
+
+.tablerow_job td:nth-child(3) {
+    font-weight: 600;
+    font-size: 12px;
+}
+
+[class^="status_"] {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 9999px; /* Pill shape */
+    white-space: nowrap;
+}
+
+.edit_form, .delete_button {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    box-sizing: border-box;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
-    
-}
-
-.delete_button:hover {
-    background-color: darkred;
+    border: none;
+    transition: all 0.2s;
 }
 
 .edit_form {
-    background-color: green;
-    color: white;
-    transition: background-color 0.2s;
-    border: none;
-    padding: 4px 8px;
-    cursor: pointer;
-    box-sizing: border-box;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
+    background-color: #EFF6FF;
+    color: #1D4ED8;
 }
 
 .edit_form:hover {
-    background-color: darkgreen;
+    background-color: #DBEAFE;
+}
+
+.delete_button {
+    background-color: #FFF1F2;
+    color: #E11D48;
+}
+
+.delete_button:hover {
+    background-color: #FFE4E6;
+}
+
+.del_form {
+    display: inline; /* Keeps the form from creating a block line break */
 }
 
 .submit_button {
@@ -165,7 +247,7 @@ dialog::backdrop {
 
 .search_box {
     width: 100%;
-    margin-top: 16px;
+    margin-top: 16px,;
 }
 
 .filter_button.active {
@@ -200,79 +282,130 @@ dialog::backdrop {
 }
 
 .status_applied {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 4px;
-    padding: 4px 8px;
+    background-color: #E0F2FE;
+    color: #0369A1;
 }
 
-.status_interview {
-    background-color: #FF9800;
-    color: white;
-    border-radius: 4px;
-    padding: 4px 8px;
+.status_interview, .status_interviewing {
+    background-color: #F3E8FF;
+    color: #6B21A8;
+}
+
+.status_offer {
+    background-color: #DCFCE7;
+    color: #15803D;
 }
 
 .status_rejected {
-    background-color: #f44336;
-    color: white;
-    border-radius: 4px;
-    padding: 4px 8px;
+    background-color: #FEE2E2;
+    color: #B91C1C;
 }
 
 .status_ghosted {
-    background-color: lightskyblue;
-    color: white;
-    border-radius: 4px;
-    padding: 4px 8px;
+    background-color: #F3F4F6;
+    color: #4B5563;
 }
 
-.stats_bar_count {
-    margin-top: 16px;
+@media (max-width: 1100px) {
+    .count_row {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .rate_row, .count_row {
+        grid-template-columns: repeat(1, 1fr); /* 1 column on phones */
+        width: 90%;
+    }
+}
+
+/* --- CONTAINER FOR BOTH ROWS --- */
+.rate_row, .count_row {
+    width: 80%;
+    margin: 0 auto 20px auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 8px;
-    width: 100%;
-    box-sizing: border-box;
+    gap: 20px;
 }
 
-.stat_bar_rate {
-    margin-top: 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    width: 100%;
-    box-sizing: border-box;
+/* --- TOP ROW (3 COLUMNS) --- */
+.rate_row {
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 32px; /* Extra space before the next row */
+    margin-top: 16px
 }
 
-.stat_card {
-    text-align: center;
-    background-color: #91A1AC;
-    color: white;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+/* --- BOTTOM ROW (7 COLUMNS) --- */
+.count_row {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px; /* Slightly tighter gap for the 7 small cards */
 }
 
-.stat_number {
-    font-size: 32px;
+/* --- CARD STYLING --- */
+.rate_card, .count_card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* --- TYPOGRAPHY --- */
+.rate_number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2563EB;
+    display: block;
+}
+
+.rate_label, .count_label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #64748B;
+    margin: 8px 0 0 0;
+}
+
+.count_number {
+    font-size: 1.5rem;
     font-weight: 700;
+    color: #1E293B;
     margin: 0;
 }
-.stat_label {
-    font-size: 14px;
-    margin: 0;
-    color: #444;
+
+/* --- PROGRESS BARS --- */
+.progress_bg {
+    height: 8px;
+    background: #F1F5F9;
+    border-radius: 10px;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.progress_fill {
+    height: 100%;
+    background: #2563EB; /* You can change this to #EF4444 for the rejection rate! */
+    border-radius: 10px;
+}
+
+
+.count_card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.rate_card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .charts_row {
     display: flex;
-    gap: 16px;
+    gap: 8px;
     margin-top: 16px;
 }
 
 .chart_container {
-    width: 300px;
+    width: 150px;
     height: 300px;
     flex: 1;
 }
