@@ -177,6 +177,9 @@ def index():
                 job.ghosted=False
     db.session.commit()
 
+    industry_list = sorted(set(job.industry for job in jobs if job.industry))
+    source_list = sorted(set(job.source for job in jobs if job.source))
+        
     total = len(jobs)
     applied = sum(1 for job in jobs if job.status == "Applied")
     interview = len(num_interview)
@@ -208,6 +211,8 @@ def index():
         rejection_rate=rejection_rate,
         interview_rate=interview_rate,
         ghosted = num_ghosted,
+        industry_list=industry_list,
+        source_list=source_list,
 
         chart_labels_M=chart_labels_M,
         chart_data_M=[monthly[k] for k in chart_labels_M],

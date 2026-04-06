@@ -6,6 +6,23 @@ body {
     color:#111;
 }
 
+label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1D3A50;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.dialog_form div {
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog_form div input, .dialog_form div select, .dialog_form div textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
 
 .navbar {
     background-color: #1D3A50;

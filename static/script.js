@@ -2,6 +2,8 @@
 
 // this variable is shared between both filters
 let activeStatus = "all"
+let activeIndustry = "all"
+let activeSource = "all"
 
 function applyFilters() {
     let search_value = document.getElementById("search").value.toLowerCase()
@@ -11,11 +13,15 @@ function applyFilters() {
         let companyCell = row.cells[0].textContent.toLowerCase()
         let roleCell = row.cells[1].textContent.toLowerCase()
         let statusCell = row.cells[2].textContent.toLowerCase()
+
+        let industryMatch = activeIndustry === "all" || row.dataset.industry === activeIndustry
+        let sourceMatch = activeSource === "all" || row.dataset.source === activeSource
+
         
         let matchesSearch = companyCell.includes(search_value) || roleCell.includes(search_value)
         let matchesStatus = activeStatus === "all" || statusCell === activeStatus
         
-        if (matchesSearch && matchesStatus) {
+        if (matchesSearch && matchesStatus && industryMatch && sourceMatch) {
             row.style.display = ""
         } else {
             row.style.display = "none"
@@ -26,7 +32,23 @@ function applyFilters() {
 // status filter updates activeStatus then runs applyFilters
 function filterStatus(status) {
     activeStatus = status
-    let buttons = document.querySelectorAll(".filter_button")
+    let buttons = document.querySelectorAll("#status_filter_bar .filter_button")
+    buttons.forEach(button => button.classList.remove("active"))
+    event.target.classList.add("active")
+    applyFilters()
+}
+
+function filterIndustry(industry) {
+    activeIndustry = industry
+    let buttons = document.querySelectorAll("#industry_filter_bar .filter_button")
+    buttons.forEach(button => button.classList.remove("active"))
+    event.target.classList.add("active")
+    applyFilters()
+}
+
+function filterSource(source) {
+    activeSource = source
+    let buttons = document.querySelectorAll("#source_filter_bar .filter_button")
     buttons.forEach(button => button.classList.remove("active"))
     event.target.classList.add("active")
     applyFilters()
@@ -87,13 +109,21 @@ function closeDialog() {
     document.getElementById("add_dialog").close()
 }
 
-function openEditDialog(index, company, title, status, date, notes) {
+function openEditDialog(index, data) {
     document.getElementById("edit_index").value = index
-    document.getElementById("edit_company").value = company
-    document.getElementById("edit_title").value = title
-    document.getElementById("edit_status").value = status
-    document.getElementById("edit_date").value = date
-    document.getElementById("edit_notes").value = notes
+    document.getElementById("edit_company").value = data.company || ""
+    document.getElementById("edit_title").value = data.title || ""
+    document.getElementById("edit_status").value = data.status || ""
+    document.getElementById("edit_date").value = data.date || ""
+    document.getElementById("edit_industry").value = data.industry || ""
+    document.getElementById("edit_source").value = data.source || ""
+    document.getElementById("edit_contact_name").value = data.contactName || ""
+    document.getElementById("edit_contact_email").value = data.contactEmail || ""
+    document.getElementById("edit_salary").value = data.salary || ""
+    document.getElementById("edit_job_url").value = data.jobUrl || ""
+    document.getElementById("edit_location").value = data.location || ""
+    document.getElementById("edit_closing_date").value = data.closingDate || ""
+    document.getElementById("edit_notes").value = data.notes || ""
     document.getElementById("edit_dialog").showModal()
 }
 
