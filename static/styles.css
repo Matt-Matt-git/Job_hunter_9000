@@ -10,11 +10,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.container {
-    max-width: 1100px; /* Or whatever width feels right for your charts */
-    margin: 0 auto;    /* Centers the website */
-    padding: 40px 20px; /* Gives top/bottom and side breathing room */
-}
 
 h1, h2, h3 {
     color: #1D3A50; /* That dark blue from your chart title */
@@ -57,7 +52,7 @@ label {
 
 /* Style for the logo or "Job Tracker" text */
 .navbar h1, .navbar .logo {
-    font-size: 1.25rem;
+    font-size: 2rem;
     font-weight: 700;
     margin: 0;
     color: #FFFFFF;
@@ -77,11 +72,14 @@ label {
     font-size: 0.9rem;
     font-weight: 500;
     transition: color 0.2s;
+    
+    
 }
 
 .nav_links a:hover {
     color: #FFFFFF; /* Brightens on hover */
 }
+
 
 dialog {
     border: none;
@@ -127,8 +125,8 @@ dialog::backdrop {
 }
 
 .maintable {
-    width: 80%;
-    margin: 40px auto;
+    width: 100%;
+    margin: 20px auto;
     border-collapse: separate; /* Allows for rounded corners on rows */
     border-spacing: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -245,9 +243,24 @@ dialog::backdrop {
     background-color: #3b75a0;
 }
 
+.header-container {
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;     /* Centers items vertically */
+    padding-top: 16px;       /* Replaces your margin-top */
+}
+
 .search_box {
     width: 100%;
-    margin-top: 16px,;
+    
+}
+
+.filter_bar {
+    width: 100%;           /* Limits the container's size */
+    margin: 20px auto;    /* Centers the 80% container on the page */
+    display: flex;        /* Turns on the "Smart Box" */
+    justify-content: flex-start; /* Keeps the buttons aligned to the left */
+    gap: 4px;
 }
 
 .filter_button.active {
@@ -255,8 +268,9 @@ dialog::backdrop {
     color: white;
 }
 
+
+
 .filter_button {
-    margin-top: 16px;
     background-color: #1D3A50;
     color: white;
     border: none;
@@ -278,7 +292,8 @@ dialog::backdrop {
     color: white;
     padding: 10px 16px;
     border-radius: 8px;
-    margin-bottom: 16px;
+    margin: 16px auto;
+    width: 80%;
 }
 
 .status_applied {
@@ -398,14 +413,52 @@ dialog::backdrop {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-.charts_row {
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
+.chart-dashboard {
+  margin: 8px auto;  
+  width: 80%;
 }
 
+.charts_row {
+    position: relative;
+    width: 100%;
+    margin: 16px auto;
+}
+
+/* Hide all charts by default */
 .chart_container {
-    width: 150px;
-    height: 300px;
-    flex: 1;
+    display: none; 
+    width: 100%;
+    height: 400px; /* Increased height for better visibility */
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 24px;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* Show only the active one */
+.chart_container.active {
+    display: block;
+}
+
+/* Tab Styling */
+.chart-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 10px auto;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: 1px solid #E2E8F0;
+    background: #f8fafc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
 }

@@ -32,6 +32,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
+
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company = db.Column(db.String, nullable=False)
@@ -98,6 +100,7 @@ def add_route():
         timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         notes_at_change=""
     )
+
     db.session.add(history)
     
     db.session.commit()
@@ -153,6 +156,7 @@ def update_route():
 def index():
     jobs = Job.query.all()
     jobs_history = StatusHistory.query.all()
+
     
     num_interview = set()
     for history in jobs_history:
@@ -181,14 +185,14 @@ def index():
     num_ghosted = 0
     for job in jobs:
         threshold = GHOSTING_THRESHOLDS.get(job.industry, 21)
-        if job.status in ["Applied", "Interview"]:
+        if job.status in ["Applied", "Interview"] and job.date:  # ← add and job.date
             date = datetime.strptime(job.date, "%Y-%m-%d")
             days_since = (datetime.now() - date).days
             if days_since >= threshold:
                 num_ghosted += 1
-                job.ghosted=True
+                job.ghosted = True
             else:
-                job.ghosted=False
+                job.ghosted = False
     db.session.commit()
 
     industry_list = sorted(set(job.industry for job in jobs if job.industry))
@@ -226,10 +230,11 @@ def index():
     daily = defaultdict(int)
 
     for job in jobs:
-        date = datetime.strptime(job.date, "%Y-%m-%d")
-        monthly[date.strftime("%Y-%m")] += 1
-        weekly[date.strftime("%Y-W%W")] += 1
-        daily[date.strftime("%Y-%m-%d")] += 1
+        if job.date:  # ← only parse if date exists
+            date = datetime.strptime(job.date, "%Y-%m-%d")
+            monthly[date.strftime("%Y-%m")] += 1
+            weekly[date.strftime("%Y-W%W")] += 1
+            daily[date.strftime("%Y-%m-%d")] += 1
     
     chart_labels_M = sorted(monthly.keys())
     chart_labels_W = sorted(weekly.keys())

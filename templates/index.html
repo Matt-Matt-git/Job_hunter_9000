@@ -9,6 +9,7 @@
 <body>
     <nav class="navbar">
          <h1>Job Tracker 9000</h1>
+         <button onclick="openDialog()" class="nav_link" id="toggle_button">+ Add Job</button>
     </nav>
     <div class="rate_row">
         <div class="rate_card">
@@ -63,8 +64,16 @@
            <p class="count_label">Withdrawn</p>
          </div>
     </div>
+    <div class="chart-dashboard">
+    <div class="chart-tabs">
+        <button class="tab-btn active" onclick="showChart(0)">Status</button>
+        <button class="tab-btn" onclick="showChart(1)">App Bar</button>
+        <button class="tab-btn" onclick="showChart(2)">Source</button>
+        <button class="tab-btn" onclick="showChart(3)">Industry</button>
+        <button class="tab-btn" onclick="showChart(4)">Success</button>
+    </div>
     <div class="charts_row">
-       <div class="chart_container">
+       <div class="chart_container active">
            <canvas id="statusChart"></canvas>
        </div>
        <div class="chart_container">
@@ -98,15 +107,17 @@
             <button onclick="filterSource('{{ source }}')" class="filter_button">{{ source }}</button>
         {% endfor %}
     </div>
+    <div class= "header-container">
+        <input type="text" class="search_box" id="search" placeholder="Search by company...">
+    </div>
 
-    <input type="text" class="search_box" id="search" placeholder="Search by company...">
     <div class="filter_bar" id="status_filter_bar">
        <button onclick="filterStatus('all')" class="filter_button">All</button>
        <button onclick="filterStatus('applied')" class="filter_button">Applied</button>
        <button onclick="filterStatus('interview')" class="filter_button">Interview</button>
        <button onclick="filterStatus('rejected')" class="filter_button">Rejected</button>
     </div>
-    <button onclick="openDialog()" class="submit_button" id="toggle_button">+ Add Job</button>
+
     {% with messages = get_flashed_messages() %}
        {% if messages %}
            {% for message in messages %}

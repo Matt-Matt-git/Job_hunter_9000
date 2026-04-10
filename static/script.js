@@ -59,6 +59,24 @@ document.getElementById("search").addEventListener("input", function() {
     applyFilters()
 })
 
+function showChart(index) {
+    // 1. Get all containers and buttons
+    const containers = document.querySelectorAll('.chart_container');
+    const buttons = document.querySelectorAll('.tab-btn');
+
+    // 2. Remove 'active' class from everyone
+    containers.forEach(container => container.classList.remove('active'));
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    // 3. Add 'active' class to the selected one
+    containers[index].classList.add('active');
+    buttons[index].classList.add('active');
+    
+    // 4. IMPORTANT: Tell Chart.js to resize because it was hidden
+    // Replace 'myCharts[index]' with your actual Chart.js instances if they look squashed
+    // window.dispatchEvent(new Event('resize')); 
+}
+
 function changeTimeframe(timeframe) {
     if (timeframe === "M") {
         timeChart.data.labels = chartLabelsM
@@ -166,7 +184,8 @@ new Chart(ctx, {
         labels: ["Applied", "Interview", "Rejected", "Offer", "Withdrawn"],
         datasets: [{
             data: [applied, interview, rejected, offers, withdrawn],
-            backgroundColor: ["#4CAF50", "#FF9800", "#f44336", "#36d1f4ff", "#de55f3ff"]
+            backgroundColor: ["#4CAF50", "#FF9800", "#f44336", "#36d1f4ff", "#de55f3ff"],
+            cutout: '70%'
         }]
     },
     options: {
@@ -203,38 +222,36 @@ const sourceColors = {
 
 const bar = document.getElementById("app_bar")
 let timeChart = new Chart(bar, { 
-    type: "bar",  // change to line while we're here
+    type: "line", // Changed from bar
     data: {
-        labels: chartLabelsM,  // default to monthly
+        labels: chartLabelsM,
         datasets: [{
             label: "Applications",
             data: chartDataM,
-            backgroundColor: "#4CAF50",
-            borderColor: "#4CAF50"
+            backgroundColor: "rgba(76, 175, 80, 0.2)", // Light fill
+            borderColor: "#4CAF50",
+            fill: true,            // Adds area under the line
+            tension: 0.4           // Smooths the line
         }]
     },    
     options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                position: "bottom"  // moves the legend to the bottom
-            },
+            legend: { position: "bottom" },
             title: {
                 display: true,
-                text: "Number of Application",
-                font: {
-                    size: 18,
-                    weight: "bold"
-                },
+                text: "Applications Over Time", // Fixed "Number of Application" typo
+                font: { size: 18, weight: "bold" },
                 color: "#1D3A50",
-                padding: {
-                    bottom: 16
-                }
+                padding: { bottom: 16 }
             }
+        },
+        scales: {
+            y: { beginAtZero: true } // Ensures chart starts at 0
         }
     }
-})
+});
 
 
 
@@ -245,7 +262,8 @@ new Chart(sourceCtx, {
         labels: sourceLabels,
         datasets: [{
             data: sourceData,
-            backgroundColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC")
+            backgroundColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC"),
+            cutout: '70%'
         }]
     },
     options: {
@@ -282,7 +300,7 @@ new Chart(successSourceCtx, {
         datasets: [{
             data: sourceSuccessData,
             backgroundColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC"),
-            borderColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC")
+            borderColor: sourceLabels.map(label => sourceColors[label] || "#91A1AC"),
         }]
     },
     options: {
@@ -345,7 +363,8 @@ new Chart(industryCtx, {
         labels: industryLabels,
         datasets: [{
             data: industryData,
-            backgroundColor: industryLabels.map(label => industryColors[label] || "#91A1AC")
+            backgroundColor: industryLabels.map(label => industryColors[label] || "#91A1AC"),
+            cutout: '70%'
         }]
     },
     options: {
